@@ -1,0 +1,12 @@
+method: GET
+path: /items
+query:
+  q: "${query}"
+headers:
+  X-Client: "mcp"
+args:
+  query: test
+expected_response:
+  ok: true
+  items:
+    - id: 1

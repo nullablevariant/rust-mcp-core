@@ -1,0 +1,17 @@
+template:
+  list:
+    - keep
+    - ${missing?}
+  map:
+    keep: ${present}
+    drop: ${missing?}
+  sentence: "start-${missing?}-end"
+args:
+  present: ok
+response: null
+expected:
+  list:
+    - keep
+  map:
+    keep: ok
+  sentence: start--end

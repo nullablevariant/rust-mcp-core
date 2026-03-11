@@ -1,0 +1,13 @@
+version: 1
+server:
+  transport:
+    mode: stdio
+resources:
+  enabled: false
+  providers:
+    - type: inline
+      items:
+        - uri: resource://disabled
+          name: disabled
+          content:
+            text: "disabled"

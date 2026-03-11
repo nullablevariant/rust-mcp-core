@@ -1,0 +1,317 @@
+# rust-mcp-core starter config template
+#
+# Copy this file, then uncomment/edit only what you need.
+# Required/optional markers are shown inline.
+# Runtime env interpolation uses ${env:VAR_NAME}.
+
+version: 1 # required
+
+# server: # optional (defaults apply if omitted)
+#   host: "127.0.0.1" # optional
+#   port: 3000 # optional
+#   endpoint_path: "/mcp" # optional
+#
+#   transport: # optional
+#     mode: streamable_http # optional (streamable_http|stdio)
+#     streamable_http: # optional
+#       enable_get_stream: true # optional
+#       enable_sse_resumption: false # optional
+#       session_mode: optional # optional (none|optional|required)
+#       allow_delete_session: false # optional
+#       sse_keep_alive_ms: null # optional (null uses runtime default 15000)
+#       sse_retry_ms: null # optional (null uses runtime default 3000)
+#       protocol_version_negotiation: # optional
+#         mode: strict # optional (strict|negotiate)
+#       hardening: # optional (requires http_hardening feature)
+#         max_request_bytes: 1048576 # optional
+#         catch_panics: true # optional
+#         sanitize_sensitive_headers: true # optional
+#         session: # optional
+#           max_sessions: null # optional
+#           idle_ttl_secs: null # optional
+#           max_lifetime_secs: null # optional
+#           creation_rate: # optional
+#             enabled: true # optional
+#             global: # optional
+#               capacity: 100 # required when global present
+#               refill_per_sec: 10 # required when global present
+#             per_ip: # optional
+#               capacity: 20 # required when per_ip present
+#               refill_per_sec: 2 # required when per_ip present
+#               key_source: peer_addr # optional (peer_addr|x_forwarded_for)
+#         rate_limit: # optional
+#           enabled: true # optional
+#           global: # optional
+#             capacity: 300 # required when global present
+#             refill_per_sec: 30 # required when global present
+#           per_ip: # optional
+#             capacity: 30 # required when per_ip present
+#             refill_per_sec: 3 # required when per_ip present
+#             key_source: peer_addr # optional (peer_addr|x_forwarded_for)
+#
+#   auth: # optional (absent = auth disabled)
+#     enabled: true # optional (set false to disable auth while keeping config)
+#     providers: # optional list (required non-empty when auth is effectively enabled)
+#       - name: "static" # required
+#         type: bearer # required (bearer|jwks|introspection|plugin)
+#         token: "${env:MCP_BEARER_TOKEN}" # required for bearer
+#
+#       - name: "okta" # required
+#         type: jwks # required
+#         issuer: "https://okta.example.com/" # optional (issuer or discovery_url required)
+#         discovery_url: "https://okta.example.com/.well-known/openid-configuration" # optional
+#         jwks_url: "https://okta.example.com/.well-known/jwks.json" # optional
+#         audiences: ["api://mcp"] # optional
+#         required_scopes: ["mcp.read"] # optional
+#         required_claims: # optional
+#           tenant: "acme"
+#         algorithms: ["RS256"] # optional
+#         clock_skew_sec: 60 # optional
+#         enable_oidc_discovery: true # optional
+#         allow_well_known_fallback: true # optional
+#
+#       - name: "corp-idp" # required
+#         type: introspection # required
+#         issuer: "https://corp.example.com/" # optional
+#         allow_missing_iss: false # optional
+#         introspection_url: "https://corp.example.com/oauth2/introspect" # required
+#         client_id: "${env:INTROSPECTION_CLIENT_ID}" # optional
+#         client_secret: "${env:INTROSPECTION_CLIENT_SECRET}" # optional
+#         auth_method: basic # optional (basic|post|none)
+#         audiences: ["api://mcp"] # optional
+#         required_scopes: ["mcp.read"] # optional
+#         required_claims: # optional
+#           tenant: "acme"
+#
+#       - name: "custom" # required
+#         type: plugin # required
+#         plugin: "auth.custom.validator" # required
+#         allow_missing_iss: false # optional
+#         required_scopes: ["mcp.read"] # optional
+#
+#     oauth: # optional (required when oauth-capable providers are configured)
+#       public_url: "https://mcp.example.com" # optional (externally reachable server URL)
+#       resource: "https://mcp.example.com/mcp" # required when oauth block present
+#       client_metadata_document_url: "https://mcp.example.com/.well-known/oauth-client-metadata" # optional
+#       scope_in_challenges: true # optional
+#
+#   errors: # optional
+#     expose_internal_details: false # optional
+#
+#   logging: # optional
+#     level: info # optional (error|warn|info|debug|trace)
+#     log_payload_max_bytes: 4096 # optional
+#
+#   response_limits: # optional
+#     text_bytes: 1048576 # optional
+#     structured_bytes: 1048576 # optional
+#     binary_bytes: 1048576 # optional
+#     other_bytes: 1048576 # optional
+#     total_bytes: 2097152 # optional
+#
+#   client_compat: # optional
+#     input_schema: # optional
+#       top_level_combinators: warn # optional (off|warn|error)
+#
+#   info: # optional
+#     name: "my-mcp-server" # optional
+#     version: "0.1.0" # optional
+#     title: "My MCP Server" # optional
+#     description: "MCP server description" # optional
+#     website_url: "https://example.com" # optional
+#     icons: # optional
+#       - src: "https://example.com/icon.png" # required
+#         mime_type: "image/png" # optional
+#         sizes: ["64x64"] # optional
+#     instructions: "Instructions shown to MCP clients" # optional
+
+# client_logging: # optional (presence enables logging capability)
+#   level: info # optional
+
+# progress: # optional (presence enables progress capability)
+#   notification_interval_ms: 250 # optional
+
+# pagination: # optional global fallback for prompts/resources
+#   page_size: 25 # required when pagination present
+
+# prompts: # optional (hybrid: present = active unless enabled=false)
+#   enabled: true # optional
+#   notify_list_changed: false # optional
+#   pagination: # optional
+#     page_size: 25 # required when pagination present
+#   providers: # required non-empty when prompts are effectively active
+#     - type: inline # required
+#       items: # required
+#         - name: "prompt.inline.example" # required
+#           arguments_schema: # required
+#             type: object
+#             properties:
+#               query:
+#                 type: string
+#             required: [query]
+#           template: # required
+#             messages:
+#               - role: user
+#                 content:
+#                   type: text
+#                   text: "Search for ${query}"
+#           completions: # optional
+#             query: "search_terms"
+#
+#     - type: plugin # optional
+#       plugin: "prompt.provider.plugin" # required
+#       config: # optional
+#         model: "gpt-4.1"
+
+# resources: # optional (hybrid: present = active unless enabled=false)
+#   enabled: true # optional
+#   notify_list_changed: false # optional
+#   clients_can_subscribe: false # optional
+#   pagination: # optional
+#     page_size: 25 # required when pagination present
+#   providers: # required non-empty when resources are effectively active
+#     - type: inline # optional
+#       items: # optional
+#         - uri: "resource://docs/readme" # required
+#           name: "README" # required
+#           content: # optional
+#             text: "hello" # optional (text or blob)
+#       templates: # optional
+#         - uri_template: "resource://docs/{id}" # required
+#           name: "Doc by ID" # required
+#           arguments_schema: # required
+#             type: object
+#             properties:
+#               id:
+#                 type: string
+#             required: [id]
+#           completions: # optional
+#             id: "document_ids"
+#     - type: plugin # optional
+#       plugin: "resource.provider.plugin" # required
+#       config: # optional
+#         namespace: "docs"
+
+# completion: # optional (hybrid: present = active unless enabled=false)
+#   enabled: true # optional
+#   providers: # required non-empty when completion is effectively active
+#     - type: inline # required
+#       name: "search_terms" # required
+#       values: ["docs", "tasks", "projects"] # required
+#     - type: plugin # optional
+#       name: "plugin_terms" # required
+#       plugin: "completion.provider.plugin" # required
+#       config: # optional
+#         max_values: 50
+
+# tasks: # optional (hybrid: present = active unless enabled=false)
+#   enabled: true # optional
+#   capabilities: # optional
+#     list: true # optional
+#     cancel: true # optional
+#   status_notifications: false # optional
+
+# client_features: # optional
+#   roots: # optional (when present, enabled is required)
+#     enabled: true # required when roots present
+#   sampling: # optional (hybrid: present = active unless enabled=false)
+#     enabled: true # optional
+#     allow_tools: false # optional
+#   elicitation: # optional (hybrid: present = active unless enabled=false)
+#     enabled: true # optional
+#     mode: form # optional (form|url|both)
+
+# outbound_http: # optional outbound HTTP policy
+#   user_agent: "rust-mcp-core/0.1.0" # optional
+#   headers: # optional
+#     X-Default: "value"
+#   timeout_ms: 30000 # optional
+#   max_response_bytes: 2097152 # optional
+#   retry: # optional (presence enables retries)
+#     max_attempts: 3 # required when retry present
+#     delay_ms: 200 # required when retry present
+#     on_network_errors: true # optional
+#     on_statuses: [429, 502, 503, 504] # optional (100..=599)
+
+# upstreams: # optional map (required for HTTP tools that use execute.upstream)
+#   api:
+#     base_url: "https://api.example.com" # required
+#     headers: # optional
+#       X-Tenant: "acme"
+#     user_agent: "custom-agent/1.0" # optional
+#     timeout_ms: 30000 # optional
+#     max_response_bytes: 2097152 # optional
+#     retry: # optional
+#       max_attempts: 3 # required when retry present
+#       delay_ms: 200 # required when retry present
+#       on_network_errors: true # optional
+#       on_statuses: [429, 502, 503, 504] # optional
+#     auth: # optional
+#       type: bearer # required (none|bearer|basic|oauth2)
+#       token: "${env:API_TOKEN}" # required for bearer
+#       # username: "${env:API_USER}" # required for basic
+#       # password: "${env:API_PASS}" # required for basic
+#       # grant: client_credentials # required for oauth2 (client_credentials|refresh_token)
+#       # token_url: "https://auth.example.com/oauth/token" # required for oauth2
+#       # client_id: "${env:OAUTH_CLIENT_ID}" # required for oauth2
+#       # client_secret: # required for oauth2
+#       #   source: env
+#       #   value: OAUTH_CLIENT_SECRET
+
+# tools: # optional (hybrid: present = active unless enabled=false)
+#   enabled: true # optional
+#   notify_list_changed: false # optional
+#   items: # required non-empty when tools are effectively active
+#     - name: "tool.http.example" # required
+#       description: "Calls an upstream HTTP API" # required
+#       input_schema: # required
+#         type: object
+#         properties:
+#           query:
+#             type: string
+#         required: [query]
+#       execute: # required
+#         type: http # required (http|plugin)
+#         upstream: "api" # required for type=http
+#         method: GET # required for type=http
+#         path: "/search" # required for type=http
+#         query: # optional
+#           q: "${query}"
+#         headers: # optional
+#           X-Trace-ID: "${env:TRACE_ID}"
+#         body: # optional
+#           payload: "${query}"
+#         retry: # optional
+#           max_attempts: 3 # required when retry present
+#           delay_ms: 200 # required when retry present
+#           on_network_errors: true # optional
+#           on_statuses: [429, 502, 503, 504] # optional
+#         task_support: forbidden # optional (forbidden|optional|required)
+#
+#       # Plugin execute alternative:
+#       # execute:
+#       #   type: plugin
+#       #   plugin: "tool.plugin.example"
+#       #   config:
+#       #     mode: strict
+#
+#       response: # optional
+#         type: structured # required when response is present (structured|content)
+#         template: "${$}" # optional (any JSON value template)
+#         fallback: text # optional (text|json_text)
+#
+#       # Content-mode response alternative:
+#       # response:
+#       #   type: content
+#       #   items:
+#       #     - type: text
+#       #       text: "Fallback text"
+
+# plugins: # optional (defaults to [])
+#   - name: "tool.plugin.example" # required
+#     type: tool # required (tool|prompt|resource|completion|auth|http_router)
+#     targets: # optional (used by http_router plugins)
+#       - type: wrap # required for each target (wrap|route)
+#         path: "/mcp" # required
+#     config: # optional plugin config blob
+#       any_key: "any_value"

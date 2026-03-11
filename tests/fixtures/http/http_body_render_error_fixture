@@ -1,0 +1,5 @@
+method: POST
+path: /items
+body:
+  id: "${id}"
+args: {}

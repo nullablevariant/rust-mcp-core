@@ -1,0 +1,23 @@
+version: 1
+server:
+  host: "127.0.0.1"
+  port: 3000
+  endpoint_path: "/mcp"
+  logging:
+    level: "info"
+  transport:
+    mode: streamable_http
+  auth:
+    providers:
+      - name: jwt
+        type: jwks
+        issuer: "https://issuer.example.com"
+plugins:
+  - name: "route"
+    type: http_router
+    targets:
+      - type: route
+        path: "/.well-known/oauth-protected-resource"
+tools:
+  enabled: false
+  items: []

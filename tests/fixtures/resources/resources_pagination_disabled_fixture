@@ -1,0 +1,32 @@
+version: 1
+server:
+  host: 127.0.0.1
+  port: 3000
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+resources:
+  notify_list_changed: false
+  clients_can_subscribe: false
+  pagination:
+    page_size: 0
+  providers:
+    - type: inline
+      items:
+        - uri: resource://disabled/one
+          name: one
+          content:
+            text: "1"
+        - uri: resource://disabled/two
+          name: two
+          content:
+            text: "2"
+upstreams: {}
+tools:
+  enabled: false
+  items: []
+plugins: []

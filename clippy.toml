@@ -1,0 +1,56 @@
+# Thresholds, disallowed patterns, and test behavior flags.
+# Lint levels (deny/warn/allow) live in Cargo.toml [workspace.lints].
+
+# --- Parameter and complexity thresholds ---
+
+# Match coding standard: >4 params requires a params struct
+too-many-arguments-threshold = 4
+
+# Tighter than default (25) for agent-authored code
+cognitive-complexity-threshold = 20
+
+# Catch oversized functions
+too-many-lines-threshold = 80
+
+# Prefer enums over boolean parameters
+max-fn-params-bools = 1
+max-struct-bools = 3
+
+# Tighten slightly from default 250
+type-complexity-threshold = 200
+
+# --- Async / performance thresholds ---
+
+# Lower than default 16KB — real-time engine should keep futures small
+future-size-threshold = 8192
+
+# Stack size threshold
+stack-size-threshold = 512000
+
+# Large error type threshold
+large-error-threshold = 128
+
+# --- Test behavior ---
+# Restriction lints (unwrap_used, expect_used, etc.) should not fire in tests
+
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-panic-in-tests = true
+allow-dbg-in-tests = true
+allow-print-in-tests = true
+
+# --- Identifier rules ---
+
+min-ident-chars-threshold = 2
+allowed-idents-below-min-chars = ["i", "j", "k", "n", "x", "y", "_", "db"]
+
+# --- Disallowed methods ---
+# Enforce async-first patterns and project conventions
+
+disallowed-methods = [
+    { path = "std::thread::sleep", reason = "Use tokio::time::sleep in async code" },
+    { path = "std::env::set_current_dir", reason = "Not safe in multi-threaded context" },
+]
+
+# --- MSRV ---
+msrv = "1.93"

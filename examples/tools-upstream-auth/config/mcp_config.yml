@@ -1,0 +1,111 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+    streamable_http:
+      sse_keep_alive_ms: 15000
+      sse_retry_ms: 2000
+      session_mode: optional
+  auth:
+    enabled: false
+
+outbound_http:
+  user_agent: "mcp-core/1.0"
+  headers:
+    X-Default-Header: "default"
+  timeout_ms: 8000
+
+upstreams:
+  reports:
+    base_url: ${env:REPORTS_BASE_URL}
+    timeout_ms: 3000
+    headers:
+      X-Upstream-Header: "reports"
+    auth:
+      type: bearer
+      token: test-reports-token
+  billing:
+    base_url: ${env:BILLING_BASE_URL}
+    auth:
+      type: basic
+      username: test-billing-user
+      password: test-billing-pass
+  partner_api:
+    base_url: ${env:PARTNER_API_BASE_URL}
+    auth:
+      type: oauth2
+      grant: client_credentials
+      token_url: ${env:PARTNER_TOKEN_URL}
+      client_id: test-partner-client-id
+      client_secret:
+        source: inline
+        value: test-partner-client-secret
+      auth_method: basic
+      scopes:
+        - partner.read
+      refresh:
+        skew_sec: 60
+        retry_on_401_once: true
+
+tools:
+  items:
+    - name: reports.list
+      description: List reports
+      input_schema:
+        type: object
+        properties:
+          request_id: { type: string }
+      execute:
+        type: http
+        upstream: reports
+        method: GET
+        path: /reports
+        headers:
+          X-Request-Id: ${request_id?}
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text
+
+    - name: billing.get
+      description: Fetch a billing record
+      input_schema:
+        type: object
+        properties:
+          id: { type: string }
+        required: [id]
+      execute:
+        type: http
+        upstream: billing
+        method: GET
+        path: /billing/${id}
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text
+
+    - name: partner.list
+      description: List partner records via oauth2 upstream auth
+      input_schema:
+        type: object
+        properties:
+          limit: { type: integer }
+      execute:
+        type: http
+        upstream: partner_api
+        method: GET
+        path: /partners
+        query:
+          limit: ${limit?}
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

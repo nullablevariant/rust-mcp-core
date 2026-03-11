@@ -1,0 +1,4 @@
+version: 1
+server:
+  response_limits:
+    total_bytes: -1

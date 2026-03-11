@@ -1,0 +1,51 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+plugins:
+  - name: healthz
+    type: http_router
+    targets:
+      - type: route
+        path: /health
+    config:
+      status: ok
+  - name: mcp_guard
+    type: http_router
+    targets:
+      - type: wrap
+        path: /mcp
+    config:
+      rate_limit_per_min: 120
+      max_body_bytes: 1048576
+      request_id_header: X-Request-Id
+
+upstreams:
+  status:
+    base_url: ${env:STATUS_BASE_URL}
+
+tools:
+  items:
+    - name: status.ping
+      description: Ping status upstream
+      input_schema:
+        type: object
+        properties: {}
+      execute:
+        type: http
+        upstream: status
+        method: GET
+        path: /health
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

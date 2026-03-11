@@ -1,0 +1,3 @@
+tool: api.content
+args:
+  count: 5

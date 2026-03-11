@@ -1,0 +1,22 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 3000
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+tools:
+  items:
+    - name: api.list
+      description: list
+      input_schema:
+        type: object
+      execute:
+        type: http
+        upstream: missing
+        method: GET
+        path: /items

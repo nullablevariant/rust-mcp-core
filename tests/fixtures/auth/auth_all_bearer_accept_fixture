@@ -1,0 +1,5 @@
+mode: "all"
+bearer_token: "static-token"
+auth_header: "Bearer static-token"
+expected_status: 200
+expect_header: null

@@ -1,0 +1,12 @@
+version: 1
+server:
+  errors:
+    expose_internal_details: true
+  logging:
+    log_payload_max_bytes: 1024
+  response_limits:
+    text_bytes: 512
+    structured_bytes: 4096
+    binary_bytes: 8192
+    other_bytes: 2048
+    total_bytes: 12288

@@ -1,0 +1,66 @@
+version: 1
+server:
+  host: 127.0.0.1
+  port: 3000
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+prompts:
+  notify_list_changed: true
+  providers:
+    - type: inline
+      items:
+        - name: prompt.inline
+          title: Inline Prompt
+          description: Inline prompt description
+          arguments_schema:
+            type: object
+            properties:
+              text:
+                type: string
+                title: Input Text
+                description: Text to process
+              length:
+                type: string
+                enum: [short, medium, long]
+            required: [text]
+          template:
+            messages:
+              - role: assistant
+                content: "System helper"
+              - role: user
+                content:
+                  type: text
+                  text: "Summarize ${text}"
+              - role: assistant
+                content:
+                  type: image
+                  data: "YWJj"
+                  mime_type: "image/png"
+              - role: assistant
+                content:
+                  type: resource
+                  uri: "resource://memo"
+                  mime_type: "text/plain"
+                  text: "${text}"
+              - role: assistant
+                content:
+                  type: resource
+                  uri: "resource://blob"
+                  mime_type: "application/octet-stream"
+                  blob: "AA=="
+              - role: assistant
+                content:
+                  type: resource_link
+                  uri: "file:///notes.txt"
+                  name: "notes.txt"
+                  mime_type: "text/plain"
+upstreams: {}
+tools:
+  enabled: false
+  items: []
+plugins: []

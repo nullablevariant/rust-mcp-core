@@ -1,0 +1,41 @@
+version: 1
+server:
+  host: 127.0.0.1
+  port: 3000
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+resources:
+  notify_list_changed: false
+  clients_can_subscribe: false
+  pagination:
+    page_size: 1
+  providers:
+    - type: inline
+      items:
+        - uri: resource://page/one
+          name: one
+          content:
+            text: "1"
+        - uri: resource://page/two
+          name: two
+          content:
+            text: "2"
+      templates:
+        - uri_template: resource://page/{id}
+          name: page-template
+          arguments_schema:
+            type: object
+            properties:
+              id:
+                type: string
+            required: [id]
+upstreams: {}
+tools:
+  enabled: false
+  items: []
+plugins: []

@@ -1,0 +1,6 @@
+expected_status: 200
+allow_missing_iss: true
+token_audience: "api://mcp"
+token_scope: "mcp.read"
+required_scopes:
+  - "mcp.read"

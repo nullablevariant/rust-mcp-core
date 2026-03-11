@@ -1,0 +1,5 @@
+template: "${user.name}"
+args:
+  user:
+    name: "Ada"
+expected: "Ada"

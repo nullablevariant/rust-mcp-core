@@ -1,0 +1,4 @@
+method: GET
+path: items
+expected_path: /items
+args: {}

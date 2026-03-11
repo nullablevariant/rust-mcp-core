@@ -1,0 +1,51 @@
+version: 1
+server:
+  transport:
+    mode: stdio
+completion:
+  enabled: true
+  providers:
+    - name: countries
+      type: inline
+      values: [US, CA, GB, FR]
+    - name: doc_paths
+      type: inline
+      values: [guide/start, guide/install, api/list]
+prompts:
+  providers:
+    - type: inline
+      items:
+        - name: prompt.travel
+          arguments_schema:
+            type: object
+            properties:
+              country:
+                type: string
+              region:
+                type: string
+          required: [country]
+          completions:
+            country: countries
+          template:
+            messages:
+              - role: user
+                content: "Plan for ${country}"
+resources:
+  providers:
+    - type: inline
+      templates:
+        - uri_template: resource://docs/{path}
+          name: docs-template
+          arguments_schema:
+            type: object
+            properties:
+              path:
+                type: string
+            required: [path]
+          completions:
+            path: doc_paths
+tools:
+  enabled: false
+  items: []
+plugins: []
+upstreams: {}

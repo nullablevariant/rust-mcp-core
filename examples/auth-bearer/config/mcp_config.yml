@@ -1,0 +1,39 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    providers:
+      - name: static
+        type: bearer
+        token: ${env:MCP_BEARER_TOKEN}
+
+upstreams:
+  api:
+    base_url: ${env:API_BASE_URL}
+
+tools:
+  items:
+    - name: api.list
+      description: List items
+      input_schema:
+        type: object
+        properties:
+          query: { type: string }
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /items
+        query:
+          q: "${query}"
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

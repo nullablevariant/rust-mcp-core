@@ -1,0 +1,7 @@
+template:
+  value: "${$.items[1].name}"
+args: {}
+response:
+  items:
+    - name: first
+    - name: second

@@ -1,0 +1,11 @@
+version: 1
+server:
+  transport:
+    mode: streamable_http
+    streamable_http:
+      hardening:
+        rate_limit:
+          enabled: true
+tools:
+  enabled: false
+  items: []

@@ -1,0 +1,9 @@
+template:
+  query:
+    optional: "${missing?}"
+    present: "${value?}"
+args:
+  value: "ok"
+expected:
+  query:
+    present: "ok"

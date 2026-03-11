@@ -1,0 +1,2 @@
+resource: "http://example.com/mcp"
+issuer: "http://issuer.test"

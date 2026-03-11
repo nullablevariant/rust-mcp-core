@@ -1,0 +1,4 @@
+template: "${flag|csv}"
+args:
+  flag: null
+expected: "null"

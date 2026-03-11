@@ -1,0 +1,7 @@
+expected_status: 401
+token_issuer: "http://issuer.test"
+token_audience: "mcp"
+token_scope: "mcp.read"
+required_scopes:
+  - "mcp.read"
+allow_missing_iss: false

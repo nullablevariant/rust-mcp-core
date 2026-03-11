@@ -1,0 +1,21 @@
+version: 1
+server:
+  host: "127.0.0.1"
+  port: 9000
+  endpoint_path: "/mcp"
+  logging:
+    level: "info"
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: true
+    providers:
+      - name: jwt
+        type: jwks
+        issuer: "https://issuer.example.com"
+    oauth:
+      public_url: "http://example.com"
+      resource: "http://example.com/custom"
+tools:
+  enabled: false
+  items: []

@@ -1,0 +1,7 @@
+version: 1
+outbound_http:
+  retry:
+    max_attempts: 2
+    delay_ms: 0
+    on_network_errors: true
+    on_statuses: [429, 503]

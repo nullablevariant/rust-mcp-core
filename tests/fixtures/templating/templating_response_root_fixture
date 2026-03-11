@@ -1,0 +1,6 @@
+template: "${$}"
+args: {}
+response:
+  ok: true
+expected:
+  ok: true

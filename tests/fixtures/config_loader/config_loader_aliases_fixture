@@ -1,0 +1,51 @@
+version: 1
+server:
+  host: "0.0.0.0"
+  port: 3000
+  endpointPath: "/mcp"
+  logLevel: "info"
+  transport:
+    sseKeepAliveMs: 15000
+    sseRetryMs: 3000
+    statefulMode: true
+  auth:
+    mode: oauth
+    bearerToken: "token"
+    publicUrl: "https://example.com"
+    resource: "https://example.com/mcp"
+    oauthPlugin: "auth-plugin"
+    providers:
+      - name: "entra"
+        tokenType: jwt
+        discoveryUrl: "https://example.com/.well-known/openid-configuration"
+        jwksUrl: "https://example.com/jwks"
+        requiredScopes: ["mcp.read"]
+        requiredClaims:
+          azp: "client"
+        algorithms: ["RS256"]
+        clockSkewSec: 60
+        introspectionUrl: "https://example.com/introspect"
+        introspectionClientId: "client-id"
+        introspectionClientSecret: "secret"
+        plugin: "custom"
+    selector:
+      defaultProvider: "entra"
+      allowMissingIss: true
+
+tools:
+  items:
+    - name: test.tool
+      description: Test
+      inputSchema:
+        type: object
+      execute:
+        type: http
+        method: GET
+        path: /test
+      response:
+        structuredContent:
+          ok: true
+        contentFallback: text
+      icons:
+        - src: "https://example.com/icon.png"
+          mimeType: "image/png"

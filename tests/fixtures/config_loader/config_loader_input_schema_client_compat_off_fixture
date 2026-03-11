@@ -1,0 +1,25 @@
+version: 1
+server:
+  client_compat:
+    input_schema:
+      top_level_combinators: off
+upstreams:
+  api:
+    base_url: https://example.com
+tools:
+  items:
+    - name: tool.compat.top_level_anyof
+      description: Top-level anyOf compatibility lint fixture
+      input_schema:
+        type: object
+        properties:
+          id:
+            type: integer
+        anyOf:
+          - required: [id]
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /items
+

@@ -1,0 +1,4 @@
+version: 1
+server:
+  logging:
+    log_payload_max_bytes: "large"

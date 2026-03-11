@@ -1,0 +1,10 @@
+structured:
+  ok: true
+output_schema:
+  type: object
+  properties:
+    ok:
+      type: boolean
+  required: [ok]
+fallback: json_text
+expected_text: '{"ok":true}'

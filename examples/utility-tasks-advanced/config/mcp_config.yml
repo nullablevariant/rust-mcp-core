@@ -1,0 +1,49 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+tasks:
+  enabled: true
+  capabilities:
+    list: true
+    cancel: true
+  status_notifications: true
+
+pagination:
+  page_size: 25
+
+tools:
+  items:
+    - name: reports.generate
+      description: Long-running report generation (task required)
+      input_schema:
+        type: object
+        properties:
+          report_id: { type: string }
+        required: [report_id]
+      execute:
+        type: plugin
+        plugin: reports.generate
+        task_support: required
+
+    - name: reports.preview
+      description: Quick preview (task optional)
+      input_schema:
+        type: object
+        properties:
+          report_id: { type: string }
+        required: [report_id]
+      execute:
+        type: plugin
+        plugin: reports.preview
+        task_support: optional
+
+plugins:
+  - name: reports.generate
+    type: tool
+  - name: reports.preview
+    type: tool

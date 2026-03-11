@@ -1,0 +1,3 @@
+structured: "hello world"
+fallback: text
+expected_text: "hello world"

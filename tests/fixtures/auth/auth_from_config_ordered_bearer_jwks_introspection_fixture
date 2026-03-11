@@ -1,0 +1,37 @@
+version: 1
+server:
+  host: "127.0.0.1"
+  port: 9000
+  endpoint_path: "/mcp"
+  logging:
+    level: "info"
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: true
+    providers:
+      - name: static
+        type: bearer
+        token: "expected-token"
+      - name: jwt
+        type: jwks
+        issuer: "https://issuer.jwt.example.com"
+        jwks_url: "https://placeholder.invalid/jwks"
+        audiences: ["api://mcp"]
+        required_scopes: ["mcp.read"]
+        algorithms: ["HS256"]
+      - name: opaque
+        type: introspection
+        issuer: "https://issuer.opaque.example.com"
+        allow_missing_iss: true
+        introspection_url: "https://placeholder.invalid/introspect"
+        client_id: "client"
+        client_secret: "secret"
+        auth_method: basic
+        audiences: ["api://mcp"]
+        required_scopes: ["mcp.read"]
+    oauth:
+      resource: "http://example.com/mcp"
+tools:
+  enabled: false
+  items: []

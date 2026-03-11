@@ -1,0 +1,6 @@
+template: "flag=${flag}, obj=${obj}"
+args:
+  flag: true
+  obj:
+    a: 1
+expected: "flag=true, obj={\"a\":1}"

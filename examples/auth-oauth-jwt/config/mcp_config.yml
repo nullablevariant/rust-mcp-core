@@ -1,0 +1,48 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    oauth:
+      public_url: "https://mcp.example.com"
+      resource: "https://mcp.example.com/mcp-resource"
+    providers:
+      - name: entra
+        type: jwks
+        issuer: "https://login.microsoftonline.com/<TENANT_ID>/v2.0"
+        jwks_url: "https://login.microsoftonline.com/<TENANT_ID>/discovery/v2.0/keys"
+        audiences: ["api://mcp-server"]
+        required_scopes: ["mcp.read"]
+        required_claims:
+          tid: "<TENANT_ID>"
+        algorithms: ["RS256"]
+        clock_skew_sec: 60
+
+upstreams:
+  api:
+    base_url: ${env:API_BASE_URL}
+
+tools:
+  items:
+    - name: api.get
+      description: Fetch a record
+      input_schema:
+        type: object
+        properties:
+          id: { type: string }
+        required: [id]
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /items/${id}
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

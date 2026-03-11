@@ -1,0 +1,25 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 3000
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+plugins:
+  - name: plugin.empty
+    type: tool
+tools:
+  items:
+    - name: plugin.empty
+      description: Empty content
+      input_schema:
+        type: object
+      output_schema:
+        type: object
+      execute:
+        type: plugin
+        plugin: plugin.empty

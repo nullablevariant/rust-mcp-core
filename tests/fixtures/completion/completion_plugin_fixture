@@ -1,0 +1,39 @@
+version: 1
+server:
+  transport:
+    mode: stdio
+completion:
+  enabled: true
+  providers:
+    - name: plugin_values
+      type: plugin
+      plugin: completion.plugin
+      config:
+        source_level: 2
+prompts:
+  providers:
+    - type: inline
+      items:
+        - name: prompt.plugin
+          arguments_schema:
+            type: object
+            properties:
+              value:
+                type: string
+          required: [value]
+          completions:
+            value: plugin_values
+          template:
+            messages:
+              - role: user
+                content: "Value ${value}"
+tools:
+  enabled: false
+  items: []
+plugins:
+  - name: completion.plugin
+    type: completion
+    config:
+      default_level: 1
+      unchanged: true
+upstreams: {}

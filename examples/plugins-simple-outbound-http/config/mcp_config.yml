@@ -1,0 +1,46 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31965
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+outbound_http:
+  timeout_ms: 3000
+  max_response_bytes: 65536
+
+plugins:
+  - name: plugin.simple_outbound_http
+    type: tool
+
+upstreams:
+  partner_api:
+    base_url: ${env:PARTNER_API_BASE_URL}
+    timeout_ms: 1000
+    max_response_bytes: 32768
+
+tools:
+  items:
+    - name: partner.list_via_plugin
+      description: Calls a configured upstream from a tool plugin using core HTTP handling
+      input_schema:
+        type: object
+        properties:
+          limit:
+            type: integer
+            minimum: 1
+          search:
+            type: string
+      execute:
+        type: plugin
+        plugin: plugin.simple_outbound_http
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

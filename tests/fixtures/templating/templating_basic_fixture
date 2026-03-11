@@ -1,0 +1,13 @@
+template:
+  path: "/projects/${project_id}"
+  query:
+    page: "${page}"
+    limit: "${limit|default(10)}"
+args:
+  project_id: 42
+  page: 2
+expected:
+  path: "/projects/42"
+  query:
+    page: 2
+    limit: 10

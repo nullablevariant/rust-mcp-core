@@ -1,0 +1,41 @@
+version: 1
+server:
+  host: 127.0.0.1
+  port: 3000
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+prompts:
+  notify_list_changed: false
+  providers:
+    - type: inline
+      items:
+        - name: prompt.duplicate
+          description: from-inline
+          arguments_schema:
+            type: object
+            properties:
+              text: { type: string }
+            required: [text]
+          template:
+            messages:
+              - role: assistant
+                content: "inline"
+    - type: plugin
+      plugin: prompt.plugin
+      config:
+        timeout: 2
+upstreams: {}
+tools:
+  enabled: false
+  items: []
+plugins:
+  - name: prompt.plugin
+    type: prompt
+    config:
+      region: us
+      timeout: 1

@@ -1,0 +1,6 @@
+expected_status: 403
+token_issuer: "http://issuer.test"
+token_audience: "mcp"
+token_scope: "mcp.write"
+required_scopes:
+  - "mcp.read"

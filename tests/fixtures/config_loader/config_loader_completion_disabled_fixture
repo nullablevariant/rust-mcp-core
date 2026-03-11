@@ -1,0 +1,3 @@
+version: 1
+completion:
+  enabled: false

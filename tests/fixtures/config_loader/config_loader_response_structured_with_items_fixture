@@ -1,0 +1,18 @@
+version: 1
+server:
+  auth:
+    enabled: false
+tools:
+  items:
+    - name: api.structured
+      description: Invalid structured response variant
+      input_schema:
+        type: object
+      execute:
+        type: plugin
+        plugin: echo
+      response:
+        type: structured
+        items:
+          - type: text
+            text: should-not-be-allowed

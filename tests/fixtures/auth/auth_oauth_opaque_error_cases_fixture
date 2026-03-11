@@ -1,0 +1,8 @@
+cases:
+  - name: status_error
+  - name: json_error
+  - name: inactive
+  - name: issuer_mismatch
+  - name: audience_mismatch
+  - name: claims_mismatch
+  - name: scopes_mismatch

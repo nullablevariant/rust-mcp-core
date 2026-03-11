@@ -1,0 +1,4 @@
+template:
+  query:
+    value: "${missing}"
+args: {}

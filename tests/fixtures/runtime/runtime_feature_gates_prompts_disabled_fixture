@@ -1,0 +1,16 @@
+version: 1
+server:
+  transport:
+    mode: stdio
+prompts:
+  enabled: false
+  providers:
+    - type: inline
+      items:
+        - name: prompt.disabled
+          arguments_schema:
+            type: object
+          template:
+            messages:
+              - role: user
+                content: "disabled"

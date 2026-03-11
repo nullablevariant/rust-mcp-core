@@ -1,0 +1,5 @@
+structured:
+  ok: true
+output_schema:
+  type: 123
+fallback: text

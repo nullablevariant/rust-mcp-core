@@ -1,0 +1,57 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+completion:
+  enabled: true
+  providers:
+    - name: common_terms
+      type: inline
+      values: [search, summarize, analyze, explain]
+    - name: domain_suggestions
+      type: plugin
+      plugin: completion.domains
+      config:
+        source: dns-cache
+
+prompts:
+  providers:
+    - type: inline
+      items:
+        - name: query.builder
+          description: Build a query template
+          arguments_schema:
+            type: object
+            properties:
+              term: { type: string }
+              domain: { type: string }
+            required: [term]
+          completions:
+            term: common_terms
+            domain: domain_suggestions
+          template:
+            messages:
+              - role: assistant
+                content: "Search ${term} in ${domain|default:example.com}"
+
+resources:
+  providers:
+    - type: inline
+      templates:
+        - uri_template: resource://docs/{topic}
+          name: docs-topic
+          arguments_schema:
+            type: object
+            properties:
+              topic: { type: string }
+            required: [topic]
+          completions:
+            topic: common_terms
+
+plugins:
+  - name: completion.domains
+    type: completion

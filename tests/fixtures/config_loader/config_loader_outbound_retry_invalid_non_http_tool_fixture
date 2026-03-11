@@ -1,0 +1,14 @@
+version: 1
+tools:
+  items:
+    - name: plugin.with.retry
+      description: invalid
+      input_schema: { type: object }
+      execute:
+        type: plugin
+        plugin: demo
+        retry:
+          max_attempts: 3
+          delay_ms: 200
+          on_network_errors: true
+          on_statuses: [429]

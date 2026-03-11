@@ -1,0 +1,12 @@
+version: 1
+server:
+  transport:
+    mode: streamable_http
+    streamable_http:
+      session_mode: none
+      hardening:
+        session:
+          max_sessions: 10
+tools:
+  enabled: false
+  items: []

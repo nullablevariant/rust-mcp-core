@@ -1,0 +1,36 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+client_features:
+  roots:
+    enabled: true
+  sampling:
+    enabled: true
+    allow_tools: false
+  elicitation:
+    enabled: true
+    mode: form
+
+tools:
+  items:
+    - name: client.features.advanced
+      description: Request roots, sampling, or elicitation from a client
+      input_schema:
+        type: object
+        properties:
+          mode:
+            type: string
+            enum: [roots, sampling, elicitation]
+        required: [mode]
+      execute:
+        type: plugin
+        plugin: client.features.advanced
+
+plugins:
+  - name: client.features.advanced
+    type: tool

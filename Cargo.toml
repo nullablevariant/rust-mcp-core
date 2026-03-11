@@ -1,0 +1,317 @@
+[package]
+name = "rust-mcp-core"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.93"
+license = "MIT"
+description = "Config-driven MCP server framework built on the official rmcp SDK. Fully implements the Model Context Protocol spec — define tools, auth, prompts, resources, and HTTP behavior in YAML/JSON with minimal Rust code."
+repository = "https://github.com/nullablevariant/rust-mcp-core"
+homepage = "https://github.com/nullablevariant/rust-mcp-core"
+documentation = "https://docs.rs/rust-mcp-core"
+readme = "README.md"
+include = [
+  "/src/**",
+  "/examples/**",
+  "/docs/**",
+  "/README.md",
+  "/LICENSE",
+  "/CHANGELOG.md",
+  "/SECURITY.md",
+  "/Cargo.toml",
+]
+keywords = ["mcp", "model-context-protocol", "config-driven", "server", "rmcp"]
+categories = ["config", "network-programming", "authentication", "api-bindings"]
+
+[package.metadata.docs.rs]
+all-features = true
+
+[features]
+default = [
+  "streamable_http",
+  "auth",
+  "http_tools",
+  "prompts",
+  "resources",
+  "completion",
+  "client_logging",
+  "progress_utility",
+  "tasks_utility",
+  "client_features",
+]
+streamable_http = [
+  "dep:axum",
+  "rmcp/transport-streamable-http-server",
+  "rmcp/transport-streamable-http-server-session",
+]
+http_hardening = [
+  "streamable_http",
+  "dep:tower-http",
+  "dep:tower_governor",
+]
+auth = [
+  "streamable_http",
+  "rmcp/auth",
+  "dep:jsonwebtoken",
+  "dep:oauth2",
+  "dep:reqwest",
+]
+http_tools = ["dep:oauth2", "dep:reqwest"]
+prompts = []
+resources = []
+completion = []
+client_logging = []
+progress_utility = []
+tasks_utility = []
+client_features = ["rmcp/elicitation"]
+
+[dependencies]
+async-trait = "0.1"
+axum = { version = "0.8.1", features = ["macros"], optional = true }
+base64 = "0.22.1"
+chrono = { version = "0.4.38", features = ["serde"] }
+futures-core = "0.3"
+futures-util = { version = "0.3", default-features = false, features = ["std"] }
+http = "1"
+jsonschema = "0.43"
+jsonwebtoken = { version = "10", optional = true, features = ["aws_lc_rs"] }
+oauth2 = { version = "5", default-features = false, optional = true }
+reqwest = { version = "0.13", features = ["json", "query", "form"], optional = true }
+rmcp = { version = "1.1.0", features = ["transport-worker"] }
+secrecy = "0.10"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = { package = "serde_norway", version = "0.9.42" }
+subtle = "2.6"
+tokio = { version = "1.41.1", features = ["full"] }
+tokio-util = "0.7"
+tower-http = { version = "0.6.8", default-features = false, optional = true, features = ["limit", "catch-panic", "sensitive-headers"] }
+tower_governor = { version = "0.8", default-features = false, features = ["axum"], optional = true }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["fmt"] }
+url = "2.5.4"
+uuid = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+httpmock = "0.8"
+reqwest = { version = "0.13", features = ["json", "query", "form"] }
+rmcp = { version = "1.1.0", features = ["client"] }
+tower = { version = "0.5", features = ["util"] }
+
+[[bench]]
+name = "runtime_split_lock_baseline"
+harness = false
+
+[[bench]]
+name = "runtime_startup_ownership_baseline"
+harness = false
+
+[[bench]]
+name = "request_hotpath_baseline"
+harness = false
+
+[[example]]
+name = "auth-all-mode"
+path = "examples/auth-all-mode/main.rs"
+required-features = ["streamable_http", "auth"]
+
+[[example]]
+name = "auth-bearer"
+path = "examples/auth-bearer/main.rs"
+required-features = ["streamable_http", "auth"]
+
+[[example]]
+name = "auth-oauth-introspection"
+path = "examples/auth-oauth-introspection/main.rs"
+required-features = ["streamable_http", "auth"]
+
+[[example]]
+name = "auth-oauth-jwt"
+path = "examples/auth-oauth-jwt/main.rs"
+required-features = ["streamable_http", "auth"]
+
+[[example]]
+name = "core-minimal"
+path = "examples/core-minimal/main.rs"
+required-features = ["streamable_http"]
+
+[[example]]
+name = "plugins-auth-custom"
+path = "examples/plugins-auth-custom/main.rs"
+required-features = ["streamable_http", "auth"]
+
+[[example]]
+name = "plugins-router-http"
+path = "examples/plugins-router-http/main.rs"
+required-features = ["streamable_http"]
+
+[[example]]
+name = "plugins-tool-client-features"
+path = "examples/plugins-tool-client-features/main.rs"
+required-features = ["streamable_http", "client_features"]
+
+[[example]]
+name = "plugins-tool-client-features-advanced"
+path = "examples/plugins-tool-client-features-advanced/main.rs"
+required-features = ["streamable_http", "client_features"]
+
+[[example]]
+name = "plugins-tool-custom"
+path = "examples/plugins-tool-custom/main.rs"
+required-features = ["streamable_http"]
+
+[[example]]
+name = "plugins-tool-filesystem"
+path = "examples/plugins-tool-filesystem/main.rs"
+required-features = ["streamable_http"]
+
+[[example]]
+name = "plugins-tool-oauth-helper"
+path = "examples/plugins-tool-oauth-helper/main.rs"
+required-features = ["streamable_http", "http_tools"]
+
+[[example]]
+name = "plugins-simple-outbound-http"
+path = "examples/plugins-simple-outbound-http/main.rs"
+required-features = ["streamable_http", "http_tools"]
+
+[[example]]
+name = "prompts-inline-plugin"
+path = "examples/prompts-inline-plugin/main.rs"
+required-features = ["streamable_http", "prompts", "completion"]
+
+[[example]]
+name = "resources-inline-plugin"
+path = "examples/resources-inline-plugin/main.rs"
+required-features = ["streamable_http", "resources", "completion"]
+
+[[example]]
+name = "resources-subscribe-updated"
+path = "examples/resources-subscribe-updated/main.rs"
+required-features = ["streamable_http", "resources"]
+
+[[example]]
+name = "tools-crud-http"
+path = "examples/tools-crud-http/main.rs"
+required-features = ["streamable_http", "http_tools"]
+
+[[example]]
+name = "tools-http-post"
+path = "examples/tools-http-post/main.rs"
+required-features = ["streamable_http", "http_tools"]
+
+[[example]]
+name = "tools-output-modes"
+path = "examples/tools-output-modes/main.rs"
+required-features = ["streamable_http", "http_tools"]
+
+[[example]]
+name = "tools-rich-content"
+path = "examples/tools-rich-content/main.rs"
+required-features = ["streamable_http", "http_tools"]
+
+[[example]]
+name = "tools-templating"
+path = "examples/tools-templating/main.rs"
+required-features = ["streamable_http", "http_tools"]
+
+[[example]]
+name = "tools-upstream-auth"
+path = "examples/tools-upstream-auth/main.rs"
+required-features = ["streamable_http", "http_tools"]
+
+[[example]]
+name = "tools-web-search"
+path = "examples/tools-web-search/main.rs"
+required-features = ["streamable_http", "http_tools"]
+
+[[example]]
+name = "utility-cancellation"
+path = "examples/utility-cancellation/main.rs"
+required-features = ["streamable_http"]
+
+[[example]]
+name = "utility-completion"
+path = "examples/utility-completion/main.rs"
+required-features = ["streamable_http", "completion", "prompts", "resources"]
+
+[[example]]
+name = "utility-list-changed"
+path = "examples/utility-list-changed/main.rs"
+required-features = ["streamable_http", "prompts", "resources"]
+
+[[example]]
+name = "utility-logging"
+path = "examples/utility-logging/main.rs"
+required-features = ["streamable_http", "client_logging"]
+
+[[example]]
+name = "utility-pagination"
+path = "examples/utility-pagination/main.rs"
+required-features = ["streamable_http", "prompts", "resources"]
+
+[[example]]
+name = "utility-progress"
+path = "examples/utility-progress/main.rs"
+required-features = ["streamable_http", "progress_utility"]
+
+[[example]]
+name = "utility-tasks"
+path = "examples/utility-tasks/main.rs"
+required-features = ["streamable_http", "tasks_utility"]
+
+[[example]]
+name = "utility-tasks-advanced"
+path = "examples/utility-tasks-advanced/main.rs"
+required-features = ["streamable_http", "tasks_utility"]
+
+# --- Lint configuration ---
+
+[lints.rust]
+unsafe_code = "forbid"
+rust_2018_idioms = { level = "warn", priority = -1 }
+missing_debug_implementations = "warn"
+unreachable_pub = "warn"
+unexpected_cfgs = { level = "warn", check-cfg = ["cfg(mutest)"] }
+
+[lints.clippy]
+# --- Groups ---
+pedantic = { level = "deny", priority = -1 }
+cargo = { level = "deny", priority = -1 }
+
+# --- Pedantic lints to allow (too noisy) ---
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+doc_markdown = "allow"
+no_effect_underscore_binding = "allow"
+similar_names = "allow"
+
+# --- Cargo lints to allow ---
+multiple_crate_versions = "allow"
+
+# --- Restriction lints (cherry-picked, deny) ---
+unwrap_used = "deny"
+dbg_macro = "deny"
+print_stdout = "deny"
+print_stderr = "deny"
+todo = "deny"
+unimplemented = "deny"
+panic_in_result_fn = "deny"
+clone_on_ref_ptr = "deny"
+mutex_atomic = "deny"
+mutex_integer = "deny"
+mem_forget = "deny"
+rc_mutex = "deny"
+str_to_string = "deny"
+
+# --- Nursery lints (cherry-picked, warn) ---
+redundant_clone = "warn"
+cognitive_complexity = "warn"
+use_self = "warn"
+large_futures = "warn"
+future_not_send = "warn"
+suboptimal_flops = "warn"
+imprecise_flops = "warn"
+missing_const_for_fn = "warn"
+needless_pass_by_ref_mut = "warn"

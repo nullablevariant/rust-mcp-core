@@ -1,0 +1,11 @@
+method: POST
+path: /items
+headers:
+  X-Client: "mcp"
+body:
+  name: "${name}"
+args:
+  name: alpha
+expected_response:
+  id: 123
+  name: alpha

@@ -1,0 +1,19 @@
+version: 1
+server:
+  host: "127.0.0.1"
+  port: 3000
+  endpoint_path: "/mcp"
+  logging:
+    level: "info"
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+plugins:
+  - name: "my_completion"
+    type: completion
+    config:
+      key: value
+tools:
+  enabled: false
+  items: []

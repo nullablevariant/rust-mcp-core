@@ -1,0 +1,34 @@
+version: 1
+server:
+  host: "127.0.0.1"
+  port: 3000
+  endpoint_path: "/mcp"
+  logging:
+    level: "info"
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+  info:
+    name: "My MCP Server"
+    version: "2.0.0"
+    title: "Server Title"
+    description: "Server description"
+    website_url: "https://example.com"
+    icons:
+      - src: "https://example.com/icon.png"
+        mime_type: "image/png"
+        sizes:
+          - "64x64"
+    instructions: "Use this server for testing"
+tools:
+  items:
+    - name: "tool.noop"
+      description: "No-op tool"
+      input_schema:
+        type: object
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /

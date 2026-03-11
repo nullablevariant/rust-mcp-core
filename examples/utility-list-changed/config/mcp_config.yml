@@ -1,0 +1,51 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+
+prompts:
+  notify_list_changed: true
+  providers:
+    - type: inline
+      items:
+        - name: prompt.alpha
+          arguments_schema:
+            type: object
+            properties: {}
+          template:
+            messages:
+              - role: assistant
+                content: "alpha"
+
+resources:
+  notify_list_changed: true
+  providers:
+    - type: inline
+      items:
+        - uri: resource://docs/alpha
+          name: docs-alpha
+          mime_type: text/plain
+          content:
+            text: alpha
+
+upstreams:
+  api:
+    base_url: ${env:API_BASE_URL}
+
+tools:
+  notify_list_changed: true
+  items:
+    - name: tool.alpha
+      description: alpha tool
+      input_schema:
+        type: object
+        properties: {}
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /alpha

@@ -1,0 +1,12 @@
+method: GET
+path: /items
+query:
+  drop: null
+  keep: value
+headers:
+  X-Drop: null
+  X-Keep: keep
+body: null
+args: {}
+timeout_ms: null
+expected_path: /items

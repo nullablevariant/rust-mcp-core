@@ -1,0 +1,32 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+tasks:
+  enabled: true
+  capabilities:
+    list: true
+    cancel: true
+  status_notifications: false
+
+tools:
+  items:
+    - name: reports.generate
+      description: Generate a report asynchronously
+      input_schema:
+        type: object
+        properties:
+          report_id: { type: string }
+        required: [report_id]
+      execute:
+        type: plugin
+        plugin: reports.tool
+        task_support: required
+
+plugins:
+  - name: reports.tool
+    type: tool

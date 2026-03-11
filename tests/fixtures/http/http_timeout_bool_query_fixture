@@ -1,0 +1,9 @@
+method: GET
+path: /items
+expected_path: /items
+timeout_ms: 1000
+query:
+  flag: true
+  filters:
+    status: open
+args: {}

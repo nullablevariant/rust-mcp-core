@@ -1,0 +1,73 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+upstreams:
+  api:
+    base_url: ${env:API_BASE_URL}
+
+tools:
+  items:
+    - name: notes.list
+      title: Notes list
+      description: Return structured note items
+      input_schema:
+        type: object
+        properties:
+          limit: { type: integer }
+      output_schema:
+        type: object
+        properties:
+          items:
+            type: array
+            items:
+              type: object
+        required: [items]
+      annotations: {}
+      icons:
+        - src: https://api.example.com/assets/note.png
+          mime_type: image/png
+          sizes: ["16x16", "32x32"]
+      _meta:
+        category: notes
+        owner: core
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /notes
+        query:
+          limit: ${limit?}
+      response:
+        type: structured
+        template:
+          items: ${$.items}
+        fallback: json_text
+
+    - name: notes.summary
+      description: Return human-friendly content blocks
+      input_schema:
+        type: object
+        properties:
+          project_id: { type: string }
+        required: [project_id]
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /projects/${project_id}/summary
+      response:
+        type: content
+        items:
+          - type: text
+            text: "Summary for ${project_id}"
+          - type: text
+            text: "${$.summary}"

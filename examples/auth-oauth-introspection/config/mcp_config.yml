@@ -1,0 +1,48 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    oauth:
+      public_url: "https://mcp.example.com"
+      resource: "https://mcp.example.com/mcp"
+    providers:
+      - name: introspection-idp
+        type: introspection
+        issuer: ${env:MCP_INTROSPECTION_ISSUER}
+        introspection_url: ${env:MCP_INTROSPECTION_URL}
+        client_id: ${env:MCP_INTROSPECT_ID}
+        client_secret: ${env:MCP_INTROSPECT_SECRET}
+        auth_method: basic
+        audiences: ["mcp"]
+        required_scopes: ["mcp.read"]
+
+upstreams:
+  api:
+    base_url: ${env:API_BASE_URL}
+
+tools:
+  items:
+    - name: api.list
+      description: List items
+      input_schema:
+        type: object
+        properties:
+          page: { type: integer }
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /items
+        query:
+          page: ${page}
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

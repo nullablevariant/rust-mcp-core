@@ -1,0 +1,5 @@
+template: ${value}
+args:
+  value: inline
+response: null
+expected: inline

@@ -1,0 +1,19 @@
+version: 1
+server:
+  auth:
+    enabled: false
+tools:
+  items:
+    - name: api.content
+      description: Invalid content response variant
+      input_schema:
+        type: object
+      execute:
+        type: plugin
+        plugin: echo
+      response:
+        type: content
+        template: "${$}"
+        items:
+          - type: text
+            text: ok

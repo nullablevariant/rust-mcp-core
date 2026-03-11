@@ -1,0 +1,19 @@
+version: 1
+server:
+  auth:
+    enabled: false
+tools:
+  items:
+    - name: api.search
+      description: Search API
+      input_schema:
+        type: object
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /search
+        plugin: "bad.plugin"
+upstreams:
+  api:
+    base_url: https://api.example.com

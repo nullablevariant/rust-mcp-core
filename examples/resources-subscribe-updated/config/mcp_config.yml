@@ -1,0 +1,28 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+resources:
+  notify_list_changed: true
+  clients_can_subscribe: true
+  providers:
+    - type: plugin
+      plugin: resource.subscribable
+      config:
+        channel: events
+      templates:
+        - uri_template: resource://events/{topic}
+          name: events-topic
+          arguments_schema:
+            type: object
+            properties:
+              topic: { type: string }
+            required: [topic]
+
+plugins:
+  - name: resource.subscribable
+    type: resource

@@ -1,0 +1,37 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+tools:
+  items:
+    - name: sleep.cancellable
+      description: Cancellable long-running operation
+      cancellable: true
+      input_schema:
+        type: object
+        properties:
+          delay_ms: { type: integer }
+      execute:
+        type: plugin
+        plugin: sleep.cancellable
+
+    - name: sleep.non_cancellable
+      description: Operation that ignores client cancellation at core layer
+      cancellable: false
+      input_schema:
+        type: object
+        properties:
+          delay_ms: { type: integer }
+      execute:
+        type: plugin
+        plugin: sleep.non_cancellable
+
+plugins:
+  - name: sleep.cancellable
+    type: tool
+  - name: sleep.non_cancellable
+    type: tool

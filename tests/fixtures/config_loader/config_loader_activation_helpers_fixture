@@ -1,0 +1,25 @@
+version: 1
+client_logging:
+  level: warning
+progress:
+  notification_interval_ms: 777
+completion:
+  providers:
+    - type: inline
+      name: task_status
+      values: [open, done]
+tasks:
+  enabled: false
+  capabilities:
+    list: true
+    cancel: true
+  status_notifications: true
+client_features:
+  roots:
+    enabled: true
+  sampling:
+    enabled: false
+    allow_tools: true
+  elicitation:
+    enabled: false
+    mode: both

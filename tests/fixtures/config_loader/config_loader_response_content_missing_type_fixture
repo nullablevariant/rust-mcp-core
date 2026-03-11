@@ -1,0 +1,31 @@
+version: 1
+server:
+  host: 127.0.0.1
+  port: 3000
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+tools:
+  items:
+    - name: tool.invalid_content
+      description: invalid content
+      input_schema:
+        type: object
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /invalid
+      response:
+        mode: content
+        content:
+          - text: missing type
+upstreams:
+  api:
+    base_url: http://example.com
+    auth:
+      type: none

@@ -1,0 +1,9 @@
+template:
+  response: "${$.results[0].title}"
+args: {}
+response:
+  results:
+    - title: "First"
+      id: 1
+expected:
+  response: "First"

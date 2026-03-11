@@ -1,0 +1,8 @@
+template:
+  query:
+    engines: "${engines|csv}"
+args:
+  engines: ["kagi", "brave"]
+expected:
+  query:
+    engines: "kagi,brave"
