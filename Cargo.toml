@@ -19,7 +19,7 @@ include = [
   "/SECURITY.md",
   "/Cargo.toml",
 ]
-keywords = ["mcp", "model-context-protocol", "config-driven", "server", "rmcp"]
+keywords = ["mcp", "modelcontextprotocol", "config-driven", "server", "rmcp"]
 categories = ["config", "network-programming", "authentication", "api-bindings"]
 
 [package.metadata.docs.rs]
