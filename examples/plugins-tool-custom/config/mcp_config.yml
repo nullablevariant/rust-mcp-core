@@ -1,0 +1,35 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+plugins:
+  - name: reports.aggregate
+    type: tool
+
+tools:
+  items:
+    - name: reports.aggregate
+      description: Aggregates data from multiple upstreams
+      input_schema:
+        type: object
+        properties:
+          project_id: { type: integer }
+        required: [project_id]
+      execute:
+        type: plugin
+        plugin: reports.aggregate
+        config:
+          include_completed: true
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

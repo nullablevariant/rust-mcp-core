@@ -1,0 +1,12 @@
+version: 1
+server:
+  host: "127.0.0.1"
+  port: 9000
+  endpoint_path: "/mcp"
+  logging:
+    level: "info"
+  transport:
+    mode: streamable_http
+tools:
+  enabled: false
+  items: []

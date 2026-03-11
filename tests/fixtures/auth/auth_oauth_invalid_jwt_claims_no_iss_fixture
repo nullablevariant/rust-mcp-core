@@ -1,0 +1,3 @@
+auth_header: "Bearer a.!@#.c"
+expected_status: 401
+allow_missing_iss: false

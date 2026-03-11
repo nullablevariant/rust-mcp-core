@@ -1,0 +1,50 @@
+version: 1
+server:
+  host: 127.0.0.1
+  port: 3000
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+resources:
+  notify_list_changed: true
+  clients_can_subscribe: false
+  providers:
+    - type: inline
+      items:
+        - uri: resource://docs/terms
+          name: terms
+          title: Terms
+          description: Terms markdown
+          mime_type: text/markdown
+          content:
+            text: "# Terms"
+          annotations:
+            audience: [user]
+            priority: 0.8
+            last_modified: "2026-02-24T00:00:00Z"
+        - uri: resource://docs/blob
+          name: blob
+          mime_type: application/octet-stream
+          content:
+            blob: "AA=="
+      templates:
+        - uri_template: resource://docs/{path}
+          name: docs-template
+          mime_type: text/markdown
+          arguments_schema:
+            type: object
+            properties:
+              path:
+                type: string
+            required: [path]
+          completions:
+            path: fs_paths
+upstreams: {}
+tools:
+  enabled: false
+  items: []
+plugins: []

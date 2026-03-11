@@ -1,0 +1,11 @@
+template:
+  - null
+  - true
+  - 3
+  - "ok"
+args: {}
+expected:
+  - null
+  - true
+  - 3
+  - "ok"

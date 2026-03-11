@@ -1,0 +1,7 @@
+cases:
+  - input: ""
+    expected: "/mcp"
+  - input: "mcp"
+    expected: "/mcp"
+  - input: "/mcp/"
+    expected: "/mcp"

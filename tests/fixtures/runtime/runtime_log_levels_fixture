@@ -1,0 +1,6 @@
+levels:
+  - trace
+  - debug
+  - info
+  - warn
+  - error

@@ -1,0 +1,7 @@
+version: 1
+outbound_http:
+  user_agent: "mcp-core-test/1.0"
+  headers:
+    X-Default: "yes"
+  timeout_ms: 5000
+  max_response_bytes: 2048

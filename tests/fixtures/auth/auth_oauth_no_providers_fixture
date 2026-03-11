@@ -1,0 +1,5 @@
+mode: "oauth"
+bearer_token: null
+auth_header: "Bearer token"
+expected_status: 401
+expect_header: null

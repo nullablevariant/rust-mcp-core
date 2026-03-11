@@ -1,0 +1,35 @@
+version: 1
+server:
+  transport:
+    mode: streamable_http
+    streamable_http:
+      session_mode: optional
+      hardening:
+        max_request_bytes: 2097152
+        catch_panics: false
+        sanitize_sensitive_headers: false
+        session:
+          max_sessions: 2048
+          idle_ttl_secs: 900
+          max_lifetime_secs: 86400
+          creation_rate:
+            enabled: true
+            global:
+              capacity: 60
+              refill_per_sec: 1
+            per_ip:
+              capacity: 10
+              refill_per_sec: 1
+              key_source: x_forwarded_for
+        rate_limit:
+          enabled: true
+          global:
+            capacity: 200
+            refill_per_sec: 20
+          per_ip:
+            capacity: 20
+            refill_per_sec: 2
+            key_source: peer_addr
+tools:
+  enabled: false
+  items: []

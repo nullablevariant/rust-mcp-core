@@ -1,0 +1,4 @@
+template:
+  value: "${name|unknown}"
+args:
+  name: test

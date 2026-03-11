@@ -1,0 +1,80 @@
+# cargo-deny configuration for rust-mcp-core
+# Run: cargo deny check
+# Docs: https://embarkstudios.github.io/cargo-deny/
+
+[graph]
+all-features = true
+
+# --- Advisories (replaces cargo-audit) ---
+
+[advisories]
+# Fail on yanked crates.
+# Vulnerability advisories are hard failures by default in modern cargo-deny.
+# Also surface all unsound/unmaintained advisories.
+unsound = "all"
+unmaintained = "all"
+yanked = "deny"
+ignore = []
+
+# --- Licenses ---
+
+[licenses]
+# Permissive-only allowlist. Copyleft (GPL, AGPL, LGPL, MPL) will fail.
+allow = [
+    "MIT",
+    "MIT-0",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "BSL-1.0",
+    "ISC",
+    "Unicode-3.0",
+    "Zlib",
+    "CDLA-Permissive-2.0",
+    "CC0-1.0",
+    "Unlicense",
+    "OpenSSL",
+]
+confidence-threshold = 0.8
+
+# --- Bans ---
+
+[bans]
+multiple-versions = "warn"
+wildcards = "deny"
+highlight = "all"
+
+# Crates that must never appear in the dependency tree
+deny = [
+    { crate = "openssl", reason = "use rustls instead" },
+    { crate = "openssl-sys", reason = "use rustls instead" },
+]
+
+# Known transitive duplicates outside our control
+skip = [
+    { crate = "cpufeatures", reason = "rmcp pulls different version via chacha20 chain" },
+    { crate = "getrandom", reason = "rmcp/jsonschema/uuid use different major versions" },
+    { crate = "hashbrown", reason = "governor/dashmap and indexmap/reference stack require different major versions" },
+    { crate = "rand", reason = "rmcp oauth2 uses rand 0.8, rmcp core uses rand 0.10" },
+    { crate = "rand_chacha", reason = "follows rand version split between oauth2 and governor stacks" },
+    { crate = "rand_core", reason = "follows rand version split" },
+    { crate = "r-efi", reason = "getrandom 0.3 and 0.4 pull different r-efi major versions" },
+    { crate = "thiserror", reason = "oauth2/jni still on thiserror 1.x, rest on 2.x" },
+    { crate = "thiserror-impl", reason = "follows thiserror version split" },
+    { crate = "untrusted", reason = "aws-lc-rs uses 0.7, webpki-roots uses 0.9" },
+    { crate = "core-foundation", reason = "system-configuration vs rustls-platform-verifier" },
+]
+
+# Platform-specific duplicates from jni (rustls-platform-verifier) using old windows-sys
+skip-tree = [
+    { crate = "windows-sys@0.45.0", reason = "jni (rustls-platform-verifier) pulls old windows-sys" },
+]
+
+# --- Sources ---
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

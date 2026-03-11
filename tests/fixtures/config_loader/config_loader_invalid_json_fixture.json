@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "server": {
+    "host": "127.0.0.1",
+    "port": 3000,
+    "endpoint_path": "/mcp",
+    "logging": { "level": "info" },
+    "transport": { "mode": "streamable_http" },
+    "auth": { "mode": "none" }
+  },
+  "upstreams": {},
+  "tools": [],
+  "plugins": []

@@ -1,0 +1,35 @@
+version: 1
+server:
+  transport:
+    mode: stdio
+  auth:
+    enabled: false
+upstreams:
+  api:
+    base_url: https://example.com
+    auth:
+      type: oauth2
+      grant: client_credentials
+      token_url: https://auth.example.com/oauth/token
+      client_id: example-client
+      client_secret:
+        source: inline
+        value: super-secret
+      mtls:
+        client_cert:
+          source: inline
+          value: |
+            -----BEGIN CERTIFICATE-----
+            test-cert
+            -----END CERTIFICATE-----
+tools:
+  items:
+    - name: noop
+      description: No-op
+      input_schema:
+        type: object
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /

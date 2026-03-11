@@ -1,0 +1,118 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+upstreams:
+  api:
+    base_url: ${env:API_BASE_URL}
+
+tools:
+  items:
+    - name: items.list
+      description: List items
+      input_schema:
+        type: object
+        properties:
+          page: { type: integer }
+          per_page: { type: integer }
+        required: []
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /items
+        query:
+          page: ${page?}
+          per_page: ${per_page?}
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text
+
+    - name: items.read
+      description: Read an item
+      input_schema:
+        type: object
+        properties:
+          id: { type: string }
+        required: [id]
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /items/${id}
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text
+
+    - name: items.create
+      description: Create an item
+      input_schema:
+        type: object
+        properties:
+          name: { type: string }
+          tags: { type: array, items: { type: string } }
+        required: [name]
+      execute:
+        type: http
+        upstream: api
+        method: POST
+        path: /items
+        body:
+          name: ${name}
+          tags: ${tags?}
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text
+
+    - name: items.update
+      description: Update an item
+      input_schema:
+        type: object
+        properties:
+          id: { type: string }
+          name: { type: string }
+        required: [id]
+      execute:
+        type: http
+        upstream: api
+        method: PUT
+        path: /items/${id}
+        body:
+          name: ${name?}
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text
+
+    - name: items.delete
+      description: Delete an item
+      input_schema:
+        type: object
+        properties:
+          id: { type: string }
+        required: [id]
+      execute:
+        type: http
+        upstream: api
+        method: DELETE
+        path: /items/${id}
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

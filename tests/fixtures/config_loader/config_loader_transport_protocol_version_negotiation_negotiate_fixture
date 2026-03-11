@@ -1,0 +1,10 @@
+version: 1
+server:
+  transport:
+    mode: streamable_http
+    streamable_http:
+      protocol_version_negotiation:
+        mode: negotiate
+tools:
+  enabled: false
+  items: []

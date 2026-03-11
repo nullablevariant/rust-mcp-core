@@ -1,0 +1,30 @@
+version: 1
+outbound_http:
+  retry:
+    max_attempts: 4
+    delay_ms: 150
+    on_network_errors: false
+    on_statuses: [429, 503]
+upstreams:
+  api:
+    base_url: https://example.com
+    retry:
+      max_attempts: 2
+      delay_ms: 300
+      on_network_errors: true
+      on_statuses: [500, 502, 503]
+tools:
+  items:
+    - name: test.http
+      description: test
+      input_schema: { type: object }
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /search
+        retry:
+          max_attempts: 5
+          delay_ms: 75
+          on_network_errors: true
+          on_statuses: [408, 429, 502]

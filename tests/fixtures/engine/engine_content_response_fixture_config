@@ -1,0 +1,37 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 3000
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+upstreams:
+  api:
+    base_url: "http://example.com"
+    auth:
+      type: none
+tools:
+  items:
+    - name: api.content
+      description: content
+      input_schema:
+        type: object
+        properties:
+          count:
+            type: integer
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /items
+      response:
+        type: content
+        items:
+          - type: text
+            text: "static"
+          - type: text
+            text: "5"

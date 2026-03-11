@@ -1,0 +1,41 @@
+version: 1
+server:
+  host: 127.0.0.1
+  port: 3000
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+prompts:
+  notify_list_changed: false
+  providers:
+    - type: inline
+      items:
+        - name: prompt.alpha
+          arguments_schema:
+            type: object
+            properties:
+              text: { type: string }
+          template:
+            messages:
+              - role: assistant
+                content: "alpha"
+        - name: prompt.bravo
+          arguments_schema:
+            type: object
+            properties:
+              text: { type: string }
+          template:
+            messages:
+              - role: assistant
+                content: "bravo"
+pagination:
+  page_size: 1
+upstreams: {}
+tools:
+  enabled: false
+  items: []
+plugins: []

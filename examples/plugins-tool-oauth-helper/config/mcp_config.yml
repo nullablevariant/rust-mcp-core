@@ -1,0 +1,53 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31963
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+plugins:
+  - name: plugin.oauth_header
+    type: tool
+
+upstreams:
+  partner_api:
+    base_url: ${env:PARTNER_API_BASE_URL}
+    auth:
+      type: oauth2
+      grant: client_credentials
+      token_url: ${env:PARTNER_TOKEN_URL}
+      client_id: test-plugin-client-id
+      client_secret:
+        source: inline
+        value: test-plugin-client-secret
+      auth_method: request_body
+      scopes:
+        - partner.read
+      refresh:
+        skew_sec: 30
+        retry_on_401_once: true
+
+tools:
+  items:
+    - name: partner.oauth_header
+      description: Demonstrates PluginContext outbound oauth + upstream HTTP helper methods
+      input_schema:
+        type: object
+        properties:
+          upstream:
+            type: string
+          force_refresh:
+            type: boolean
+      execute:
+        type: plugin
+        plugin: plugin.oauth_header
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

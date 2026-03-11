@@ -1,0 +1,31 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+client_features:
+  roots:
+    enabled: true
+  sampling:
+    enabled: true
+    allow_tools: false
+  elicitation:
+    enabled: true
+    mode: form
+
+tools:
+  items:
+    - name: workspace.summarize
+      description: Summarize all workspace roots
+      input_schema:
+        type: object
+      execute:
+        type: plugin
+        plugin: workspace.tool
+
+plugins:
+  - name: workspace.tool
+    type: tool

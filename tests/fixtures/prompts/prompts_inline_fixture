@@ -1,0 +1,3 @@
+name: prompt.inline
+args:
+  text: hello world

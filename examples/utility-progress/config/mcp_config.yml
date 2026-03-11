@@ -1,0 +1,26 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+progress:
+  enabled: true
+  notification_interval_ms: 100
+
+tools:
+  items:
+    - name: progress.demo
+      description: Emit progress notifications from a tool plugin
+      input_schema:
+        type: object
+        properties: {}
+      execute:
+        type: plugin
+        plugin: progress.demo
+
+plugins:
+  - name: progress.demo
+    type: tool

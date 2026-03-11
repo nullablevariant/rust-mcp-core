@@ -1,0 +1,26 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+client_logging:
+  level: info
+
+tools:
+  items:
+    - name: logging.demo
+      description: Emit server + client log messages from a tool plugin
+      input_schema:
+        type: object
+        properties:
+          message: { type: string }
+      execute:
+        type: plugin
+        plugin: logging.demo
+
+plugins:
+  - name: logging.demo
+    type: tool

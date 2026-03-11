@@ -1,0 +1,12 @@
+method: GET
+path: /ping
+query: ${query}
+headers: ${headers}
+body: null
+args:
+  query: "not-an-object"
+  headers:
+    - "not"
+    - "an-object"
+timeout_ms: null
+expected_path: /ping

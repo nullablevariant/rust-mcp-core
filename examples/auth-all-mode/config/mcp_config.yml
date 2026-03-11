@@ -1,0 +1,46 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    oauth:
+      public_url: "https://mcp.example.com"
+      resource: "https://mcp.example.com/mcp"
+    providers:
+      - name: static
+        type: bearer
+        token: ${env:MCP_BEARER_TOKEN}
+      - name: entra
+        type: jwks
+        issuer: "https://login.microsoftonline.com/<TENANT_ID>/v2.0"
+        discovery_url: "https://login.microsoftonline.com/<TENANT_ID>/v2.0/.well-known/openid-configuration"
+        audiences: ["api://mcp-server"]
+        required_scopes: ["mcp.read"]
+        algorithms: ["RS256"]
+
+upstreams:
+  api:
+    base_url: ${env:API_BASE_URL}
+
+tools:
+  items:
+    - name: api.list
+      description: List items
+      input_schema:
+        type: object
+        properties: {}
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /items
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

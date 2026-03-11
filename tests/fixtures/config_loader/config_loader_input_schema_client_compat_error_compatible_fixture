@@ -1,0 +1,27 @@
+version: 1
+server:
+  client_compat:
+    input_schema:
+      top_level_combinators: error
+upstreams:
+  api:
+    base_url: https://example.com
+tools:
+  items:
+    - name: tool.compat.object_only
+      description: Object-only constraints should remain valid in error mode
+      input_schema:
+        type: object
+        properties:
+          id:
+            type: integer
+          title:
+            type: string
+        required: [id]
+        minProperties: 1
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /items
+

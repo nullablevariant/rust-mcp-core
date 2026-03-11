@@ -1,0 +1,17 @@
+version: 1
+server:
+  host: "127.0.0.1"
+  port: 3000
+  endpoint_path: "/mcp"
+  logging:
+    level: "info"
+  transport:
+    mode: stdio
+  auth:
+    providers:
+      - name: static
+        type: bearer
+        token: "token"
+tools:
+  enabled: false
+  items: []

@@ -1,0 +1,24 @@
+version: 1
+server:
+  host: "127.0.0.1"
+  port: 9000
+  endpoint_path: "/mcp"
+  logging:
+    level: "info"
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: true
+    providers:
+      - name: static
+        type: bearer
+        token: "expected-token"
+      - name: plugin
+        type: plugin
+        plugin: allow-all
+plugins:
+  - name: allow-all
+    type: auth
+tools:
+  enabled: false
+  items: []

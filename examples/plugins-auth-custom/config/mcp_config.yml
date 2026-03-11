@@ -1,0 +1,36 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    oauth:
+      resource: "http://127.0.0.1:31943/mcp"
+    providers:
+      - name: mock-idp
+        type: introspection
+        issuer: ${env:MCP_INTROSPECTION_ISSUER}
+        introspection_url: ${env:MCP_INTROSPECTION_URL}
+        client_id: ${env:MCP_INTROSPECT_ID}
+        client_secret: ${env:MCP_INTROSPECT_SECRET}
+        auth_method: basic
+      - name: provider-validator
+        type: plugin
+        plugin: auth.provider_validator
+      - name: custom-validator
+        type: plugin
+        plugin: auth.custom_validator
+
+plugins:
+  - name: auth.custom_validator
+    type: auth
+  - name: auth.provider_validator
+    type: auth
+
+tools:
+  enabled: false
+  items: []

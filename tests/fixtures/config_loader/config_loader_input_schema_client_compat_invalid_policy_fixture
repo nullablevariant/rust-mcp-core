@@ -1,0 +1,8 @@
+version: 1
+server:
+  client_compat:
+    input_schema:
+      top_level_combinators: warning
+tools:
+  enabled: false
+  items: []

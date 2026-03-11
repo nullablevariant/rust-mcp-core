@@ -1,0 +1,6 @@
+version: 1
+server:
+  auth:
+    enabled: false
+client_features:
+  roots: {}

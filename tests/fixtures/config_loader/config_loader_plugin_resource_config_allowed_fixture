@@ -1,0 +1,25 @@
+version: 1
+server:
+  host: "127.0.0.1"
+  port: 3000
+  endpoint_path: "/mcp"
+  logging:
+    level: "info"
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+resources:
+  notify_list_changed: false
+  clients_can_subscribe: false
+  providers:
+    - type: plugin
+      plugin: resource.plugin
+plugins:
+  - name: "resource.plugin"
+    type: resource
+    config:
+      root: "/tmp/data"
+tools:
+  enabled: false
+  items: []

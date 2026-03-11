@@ -1,0 +1,6 @@
+cases:
+  - name: invalid_header
+  - name: no_matching_kid
+  - name: invalid_jwk
+  - name: decode_error
+  - name: required_claims_mismatch

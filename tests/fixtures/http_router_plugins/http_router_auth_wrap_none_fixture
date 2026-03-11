@@ -1,0 +1,3 @@
+auth_enabled: false
+oauth_enabled: false
+resource_url:

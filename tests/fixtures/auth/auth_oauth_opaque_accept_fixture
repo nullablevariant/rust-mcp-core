@@ -1,0 +1,6 @@
+expected_status: 200
+token_scope: mcp
+required_scopes:
+  - mcp
+issuer: http://opaque-issuer
+audience: mcp

@@ -1,0 +1,8 @@
+version: 1
+server:
+  auth:
+    enabled: true
+    providers: []
+tools:
+  enabled: false
+  items: []

@@ -1,0 +1,9 @@
+version: 1
+server:
+  transport:
+    mode: streamable_http
+    streamable_http:
+      hardening: {}
+tools:
+  enabled: false
+  items: []

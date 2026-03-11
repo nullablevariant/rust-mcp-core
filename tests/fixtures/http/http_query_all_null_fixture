@@ -1,0 +1,7 @@
+method: GET
+path: /items
+query:
+  drop_one: null
+  drop_two: null
+args: {}
+expected_path: /items

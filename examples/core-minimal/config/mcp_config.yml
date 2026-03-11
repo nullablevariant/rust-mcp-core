@@ -1,0 +1,33 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+upstreams:
+  example:
+    base_url: ${env:API_BASE_URL}
+
+tools:
+  items:
+    - name: example.ping
+      description: Ping example API
+      input_schema:
+        type: object
+        properties: {}
+      execute:
+        type: http
+        upstream: example
+        method: GET
+        path: /ping
+      response:
+        type: structured
+        template:
+          data: ${$}
+        fallback: text

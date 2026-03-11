@@ -1,0 +1,66 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+prompts:
+  notify_list_changed: true
+  pagination:
+    page_size: 25
+  providers:
+    - type: inline
+      items:
+        - name: summarize.document
+          title: Summarize document
+          description: Summarize text to a requested length
+          arguments_schema:
+            type: object
+            properties:
+              text:
+                type: string
+                description: Source text
+              length:
+                type: string
+                enum: [short, medium, long]
+            required: [text]
+          completions:
+            length: summary_lengths
+          template:
+            messages:
+              - role: assistant
+                content: "You are a concise summarizer."
+              - role: user
+                content:
+                  type: text
+                  text: "Summarize (${length|default:medium}): ${text}"
+
+    - type: plugin
+      plugin: prompts.catalog
+      config:
+        source: postgres
+        table: prompt_templates
+
+completion:
+  enabled: true
+  providers:
+    - name: summary_lengths
+      type: inline
+      values: [short, medium, long]
+    - name: catalog_topics
+      type: inline
+      values: [auth, tools, resources, prompts]
+
+plugins:
+  - name: prompts.catalog
+    type: prompt
+    config:
+      region: us
+      timeout_ms: 500
+upstreams: {}

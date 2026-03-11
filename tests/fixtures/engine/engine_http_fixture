@@ -1,0 +1,5 @@
+args:
+  query: alpha
+expected:
+  items:
+    - id: 1

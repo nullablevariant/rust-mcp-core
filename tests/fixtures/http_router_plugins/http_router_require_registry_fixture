@@ -1,0 +1,20 @@
+version: 1
+server:
+  host: "127.0.0.1"
+  port: 3000
+  endpoint_path: "/mcp"
+  logging:
+    level: "info"
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+plugins:
+  - name: "noop"
+    type: http_router
+    targets:
+      - type: wrap
+        path: "*"
+tools:
+  enabled: false
+  items: []

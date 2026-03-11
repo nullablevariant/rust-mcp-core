@@ -1,0 +1,47 @@
+version: 1
+server:
+  host: 0.0.0.0
+  port: 31943
+  endpoint_path: /mcp
+  logging:
+    level: info
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+upstreams:
+  searxng:
+    base_url: ${env:API_BASE_URL}
+
+tools:
+  items:
+    - name: web_search
+      description: Search the web
+      input_schema:
+        type: object
+        properties:
+          query: { type: string }
+          engines: { type: [array, string] }
+          categories: { type: [array, string] }
+          language: { type: string }
+          time_range: { type: string }
+        required: [query]
+      execute:
+        type: http
+        upstream: searxng
+        method: GET
+        path: /search
+        query:
+          q: ${query}
+          format: json
+          engines: ${engines|csv?}
+          categories: ${categories|csv?}
+          language: ${language?}
+          time_range: ${time_range?}
+      response:
+        type: structured
+        template:
+          query: ${query}
+          results: ${$.results}
+        fallback: text

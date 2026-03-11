@@ -1,0 +1,4 @@
+mode: bearer
+bearer_token: secret
+auth_header: "Bearer secret"
+expected_status: 200

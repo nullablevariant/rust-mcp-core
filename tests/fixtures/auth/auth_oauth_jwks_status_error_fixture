@@ -1,0 +1,4 @@
+expected_status: 401
+token_issuer: "https://issuer.example.com"
+token_audience: "api://mcp"
+token_scope: "mcp.read"

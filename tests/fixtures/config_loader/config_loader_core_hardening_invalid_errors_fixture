@@ -1,0 +1,4 @@
+version: 1
+server:
+  errors:
+    expose_internal_details: "yes"

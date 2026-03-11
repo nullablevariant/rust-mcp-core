@@ -1,0 +1,48 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+upstreams:
+  media:
+    base_url: ${env:API_BASE_URL}
+
+tools:
+  items:
+    - name: media.preview
+      description: Return mixed rich content blocks
+      input_schema:
+        type: object
+        properties:
+          id: { type: string }
+        required: [id]
+      execute:
+        type: http
+        upstream: media
+        method: GET
+        path: /media/${id}
+      response:
+        type: content
+        items:
+          - type: text
+            text: "Preview for ${id}"
+          - type: image
+            data: "${$.image_base64}"
+            mime_type: image/png
+          - type: audio
+            data: "${$.audio_base64}"
+            mime_type: audio/wav
+          - type: resource_link
+            uri: "resource://media/${id}"
+            name: media-${id}
+            title: Media item ${id}
+            description: Linked media metadata
+            mime_type: application/json
+          - type: resource
+            resource:
+              uri: "resource://media/${id}/summary"
+              mime_type: text/plain
+              text: "${$.summary}"

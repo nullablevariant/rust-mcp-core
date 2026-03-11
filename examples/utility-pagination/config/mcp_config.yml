@@ -1,0 +1,85 @@
+version: 1
+server:
+  port: 31943
+  transport:
+    mode: streamable_http
+  auth:
+    enabled: false
+
+pagination:
+  page_size: 2
+
+prompts:
+  pagination:
+    page_size: 1
+  providers:
+    - type: inline
+      items:
+        - name: prompt.one
+          arguments_schema:
+            type: object
+            properties: {}
+          template:
+            messages:
+              - role: assistant
+                content: "one"
+        - name: prompt.two
+          arguments_schema:
+            type: object
+            properties: {}
+          template:
+            messages:
+              - role: assistant
+                content: "two"
+
+resources:
+  pagination:
+    page_size: 1
+  providers:
+    - type: inline
+      items:
+        - uri: resource://docs/one
+          name: docs-one
+          mime_type: text/plain
+          content:
+            text: one
+        - uri: resource://docs/two
+          name: docs-two
+          mime_type: text/plain
+          content:
+            text: two
+      templates:
+        - uri_template: resource://docs/{name}
+          name: docs-template
+          arguments_schema:
+            type: object
+            properties:
+              name: { type: string }
+            required: [name]
+
+tools:
+  items:
+    - name: tool.one
+      description: first tool
+      input_schema:
+        type: object
+        properties: {}
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /one
+    - name: tool.two
+      description: second tool
+      input_schema:
+        type: object
+        properties: {}
+      execute:
+        type: http
+        upstream: api
+        method: GET
+        path: /two
+
+upstreams:
+  api:
+    base_url: ${env:API_BASE_URL}
